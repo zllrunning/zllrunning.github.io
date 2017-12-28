@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2017-12-28</span>
-            <span class="time">17:19:03</span>
+            <span class="time">21:17:28</span>
           </span>
           
           <!--  Categories  -->
@@ -133,7 +133,7 @@
 <li><p>安装matlab</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /home/zll/matlab2016/install</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>在安装到80%时出现拨出1，插入2的提示，此时输入下面指令，然后点击ok</p>
+<li><p>在安装到80%时出现拨出1，插入2的提示，<strong>此时输入下面指令，然后点击ok</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mount -t auto -o loop /home/zll/Downloads/software/Linux_matlab/R2016b_glnxa64_dvd2.iso /home/zll/matlab2016/</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>此时可以取消挂载了</p>
@@ -149,12 +149,12 @@
 </li>
 <li><p>选择下载的文件内的license_standalone.lic</p>
 </li>
-<li><p>进行文件替换</p>
+<li><p>下面进行文件替换</p>
 </li>
-<li><p>cd 至Linux_matlab/R2016b/bin/glnxa64下</p>
+<li><p><strong>cd 至Linux_matlab/R2016b/bin/glnxa64下(下载安装包位置)</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp lib* /usr/<span class="built_in">local</span>/MATLAB/R2016b/bin/glnxa64/</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>更改home下 .matlab文件夹的权限，不然以桌面快捷形式打开会提示没有权限</p>
+<li><p><strong>更改home下 </strong> <strong>.</strong>matlab文件夹的权限，不然以桌面快捷形式打开会提示没有写权限</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod -R 777 .matlab/</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>设置桌面快捷方式</p>
