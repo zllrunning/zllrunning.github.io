@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="zll">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="让谷歌搜索到自己的博客"/>
+  <meta property="og:description" content="石头的记录" />
+  <meta property="og:site_name" content="小小石头"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://zllrunning.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="小小石头" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>小小石头</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">让谷歌搜索到自己的博客</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/zllrunning">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:zllrunning@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By zll</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2017-12-31</span>
+            <span class="time">18:52:32</span>
+          </span>
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/记录/">记录</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/blog/">#blog</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>今天想让google能搜索到自己的博客，网上也有很多的教程，这里自己做一个记录，其中在google提交站点地图的时候，全部报错，下面记录下修改过程。<br><a id="more"></a></p>
+<h3 id="1-打开Google搜索引擎提交入口"><a href="#1-打开Google搜索引擎提交入口" class="headerlink" title="1. 打开Google搜索引擎提交入口"></a>1. 打开Google搜索引擎提交入口</h3><p><a href="https://www.google.com/webmasters/tools/home?hl=zh-CN" target="_blank" rel="noopener">链接在此</a></p>
+<h3 id="2-登录Google账号后填写自己的网址，然后进入下载验证文件界面，此时下载HTML验证文件，将此文件放在source目录下，对该文件做个小改动，添加前两行。"><a href="#2-登录Google账号后填写自己的网址，然后进入下载验证文件界面，此时下载HTML验证文件，将此文件放在source目录下，对该文件做个小改动，添加前两行。" class="headerlink" title="2. 登录Google账号后填写自己的网址，然后进入下载验证文件界面，此时下载HTML验证文件，将此文件放在source目录下，对该文件做个小改动，添加前两行。"></a>2. 登录Google账号后填写自己的网址，然后进入下载验证文件界面，此时下载HTML验证文件，将此文件放在source目录下，<strong>对该文件做个小改动，添加前两行</strong>。</h3><pre><code>layout: false
+---
+google-site-verification: google91f0f9be9565e882.html
+</code></pre><p>###然后部署<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo c</span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-浏览器访问"><a href="#3-浏览器访问" class="headerlink" title="3.浏览器访问"></a>3.浏览器访问</h3><pre><code>https://zllrunning.github.io/google91f0f9be9565e882.html
+</code></pre><p>###可以看到一串字符，说明完成</p>
+<h3 id="4-安装插件生成sitemap"><a href="#4-安装插件生成sitemap" class="headerlink" title="4.安装插件生成sitemap"></a>4.安装插件生成sitemap</h3><pre><code>npm install hexo-generator-sitemap --save
+</code></pre><h3 id="5-编辑博客-config-yml文件，添加"><a href="#5-编辑博客-config-yml文件，添加" class="headerlink" title="5. 编辑博客_config.yml文件，添加"></a>5. 编辑博客_config.yml文件，添加</h3><pre><code># Sitemap-google
+sitemap:
+        path: sitemap.xml
+</code></pre><h2 id="注意此时需要检查一个地方是否正确，将yoursite-com更改为自己的，我在这之前没改yoursite-com，在第六步的时候提交出现一系列错误（错误为：查看了sitemap-xml文件后发现，全是youtise-com）。"><a href="#注意此时需要检查一个地方是否正确，将yoursite-com更改为自己的，我在这之前没改yoursite-com，在第六步的时候提交出现一系列错误（错误为：查看了sitemap-xml文件后发现，全是youtise-com）。" class="headerlink" title="注意此时需要检查一个地方是否正确，将yoursite.com更改为自己的，我在这之前没改yoursite.com，在第六步的时候提交出现一系列错误（错误为：查看了sitemap.xml文件后发现，全是youtise.com）。"></a>注意此时需要检查一个地方是否正确，将yoursite.com更改为自己的，我在这之前没改yoursite.com，在第六步的时候提交出现一系列错误（错误为：查看了sitemap.xml文件后发现，全是youtise.com）。</h2><p>###有问题的sitemap.xml<br><img src="https://i.imgur.com/po9ttSK.png" alt="错误如图"></p>
+<h3 id="正常的sitemap-xml"><a href="#正常的sitemap-xml" class="headerlink" title="正常的sitemap.xml"></a>正常的sitemap.xml</h3><p><img src="https://i.imgur.com/NLIitNw.png" alt="正常的如图"></p>
+<pre><code># URL
+## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos;
+url: http://yoursite.com
+</code></pre><p>###未更改之前如上所示，更改后如下所示</p>
+<pre><code># URL
+## If your site is put in a subdirectory, set url as &apos;http://yoursite.com/child&apos; and root as &apos;/child/&apos;
+url: http://zllrunning.github.io
+</code></pre><p>###然后部署<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo c</span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure></p>
+<h3 id="6-提交站点地图"><a href="#6-提交站点地图" class="headerlink" title="6.提交站点地图"></a>6.提交站点地图</h3><ul>
+<li>进入search console，左侧有选项–&gt;抓取–&gt;站点地图</li>
+<li>右上角添加sitemap.xml，提交，OK。<br><img src="https://i.imgur.com/ZXNq0to.png" alt="提交"></li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
