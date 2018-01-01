@@ -104,7 +104,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2017-12-20</span>
-            <span class="time">22:56:09</span>
+            <span class="time">10:48:35</span>
           </span>
 
           
@@ -152,6 +152,20 @@ sudo apt-get install -f      #安装依赖项
 <hr>
 
         </div>
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'zllrunning',
+    repo: 'https://github.com/zllrunning/zllrunning.github.io',
+    oauth: {
+        client_id: '11483cd3fe4d12a35e6f',
+        client_secret: '0014110ad88a36d084fa1594d4936c50a21e2146',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
       </div>
     </div>
   </div>
