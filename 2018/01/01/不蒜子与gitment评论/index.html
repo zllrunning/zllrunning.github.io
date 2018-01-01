@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="zll">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="hexo(针对主题areo-dual)搭建的博客添加不蒜子流量统计与gitment评论"/>
+  <meta property="og:description" content="石头的记录" />
+  <meta property="og:site_name" content="小小石头"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://zllrunning.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="小小石头" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+
+  <!-- Site Title -->
+  <title>小小石头</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">hexo(针对主题areo-dual)搭建的博客添加不蒜子流量统计与gitment评论</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/zllrunning">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:zllrunning@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By zll</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-01-01</span>
+            <span class="time">12:29:54</span>
+          </span>
+
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/记录/">记录</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/blog/">#blog</a>
+
+
+	  <span id="busuanzi_container_page_pv">
+   		本文浏览量<span id="busuanzi_value_page_pv"></span>次
+	  </span>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>为hexo搭建的博客主题为aero-dual添加流量统计和gitment评论功能<br><a id="more"></a></p>
+<h2 id="添加不蒜子流量统计"><a href="#添加不蒜子流量统计" class="headerlink" title="添加不蒜子流量统计"></a>添加不蒜子流量统计</h2><ul>
+<li>在主题的layout–&gt;_partial–&gt;header.ejs文件添加<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script async src=&quot;//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js&quot;&gt;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如下图所示<br><img src="https://i.imgur.com/6QrmHAq.png?1" alt="Imgur"></p>
+<ul>
+<li>在主题的layout–&gt;_partial–&gt;footer.ejs文件添加<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id=&quot;busuanzi_container_site_pv&quot;&gt;</span><br><span class="line">本站总访问量	&lt;span id=&quot;busuanzi_value_site_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如下图所示<br><img src="https://i.imgur.com/s2V1YsA.png?1" alt="Imgur"></p>
+<ul>
+<li>在themes/aero-dual/layout/_partial/post/article.ejs添加<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;</span><br><span class="line">本文浏览量&lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt;次</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>如下图所示<br><img src="https://i.imgur.com/abr3J44.png?1" alt="Imgur"></p>
+<h2 id="添加gitment评论"><a href="#添加gitment评论" class="headerlink" title="添加gitment评论"></a>添加gitment评论</h2><ul>
+<li><p>此部分主要参考  <a href="https://runjaelyn.github.io/2017/07/16/commentBlog/" target="_blank" rel="noopener">搭建 Github 个人博客(四)：配置博客评论功能</a>，已经讲解的很详细，这里只针对areo-dual主题添加代码的位置进行记录。</p>
+</li>
+<li><p>themes/aero-dual/layout/_partial/post/article.ejs添加</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"gitmentContainer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"https://imsun.github.io/gitment/style/default.css"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://imsun.github.io/gitment/dist/gitment.browser.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">var gitment = new Gitment(&#123;</span></span><br><span class="line"><span class="undefined">    owner: 'Your GitHub username',</span></span><br><span class="line"><span class="undefined">    repo: 'The repo to store comments',</span></span><br><span class="line"><span class="undefined">    oauth: &#123;</span></span><br><span class="line"><span class="undefined">        client_id: ''Your client ID'',</span></span><br><span class="line"><span class="undefined">        client_secret: 'Your client secret',</span></span><br><span class="line"><span class="undefined">    &#125;,</span></span><br><span class="line"><span class="undefined">&#125;);</span></span><br><span class="line"><span class="undefined">gitment.render('gitmentContainer');</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>说明：以上代码有四个需要修改的地方：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Your GitHub username：填写你的博客所在的 GitHub 账户名；</span><br><span class="line">The repo to store comments：填写存放评论的 GitHub 仓库名(由于 gitment 的评论是通过 issues 来存放的，所以建议这里填写个人博客所在的仓库)。</span><br><span class="line">Your client ID：前面所申请到的 Client ID。</span><br><span class="line">Your client secret：前面所申请到的 Client Secret。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更改结果如图所示<br><img src="https://i.imgur.com/jnRHiFG.png?1" alt="Imgur"></p>
+</li>
+</ul>
+
+        </div>
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'zllrunning',
+    repo: 'zllrunning.github.io',
+    oauth: {
+        client_id: 'e6f46c4e8b4073d9bc67',
+        client_secret: '3d4cbc0a4cd9abd0ca6d6a691e20f9161a11677f',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+	   <span id="busuanzi_container_site_pv">
+    	     本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	   </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
