@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="zll">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="Ubuntu安装记录"/>
+  <meta property="og:title" content="Pytorch预训练网络的使用(二)"/>
   <meta property="og:description" content="石头的记录" />
   <meta property="og:site_name" content="小小石头"/>
   <meta property="og:type" content="article" />
@@ -47,7 +47,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">Ubuntu安装记录</p>
+          <p class="title">Pytorch预训练网络的使用(二)</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -103,7 +103,7 @@
           
           <!-- Date -->
           <span class="date-time info">On
-            <span class="date">2017-12-20</span>
+            <span class="date">2018-03-25</span>
             <span class="time">22:59:31</span>
           </span>
 
@@ -111,7 +111,7 @@
           <!--  Categories  -->
             <span class="categories info">Under 
 
-<a href="/categories/软件/">软件</a>
+<a href="/categories/深度学习/">深度学习</a>
 </span>
           
         </div>
@@ -120,7 +120,7 @@
           <div class="post-tags text-muted">
             Tags: 
 
-<a class="tag" href="/tags/软件安装/">#软件安装</a>
+<a class="tag" href="/tags/Pytorch/">#Pytorch</a>
 
 
 	  <span id="busuanzi_container_page_pv">
@@ -130,26 +130,9 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <p>电脑常用软件安装记录<br><a id="more"></a></p>
-<h4 id="opencv"><a href="#opencv" class="headerlink" title="opencv"></a>opencv</h4><ul>
-<li>conda安装opencv2.x</li>
-</ul>
-<pre><code>conda install -c https://conda.anaconda.org/menpo opencv 
-</code></pre><ul>
-<li>conda安装opencv3.x</li>
-</ul>
-<pre><code>conda install -c https://conda.anaconda.org/menpo opencv3
-</code></pre><hr>
-<h4 id="remarkable-Markdown编辑器"><a href="#remarkable-Markdown编辑器" class="headerlink" title="remarkable Markdown编辑器"></a>remarkable Markdown编辑器</h4><p><a href="https://remarkableapp.github.io/linux/download.html" target="_blank" rel="noopener">remarkable下载地址</a></p>
-<pre><code>dpkg -i remarkable_1.62_all.deb
-sudo apt-get install -f      #安装依赖项
-</code></pre><p>命令行可能会提示 *Spellchecking not enabled.执行下面语句即可</p>
-<pre><code>sudo apt-get install python3-gtkspellcheck 
-</code></pre><hr>
-<h4 id="matlab2016b"><a href="#matlab2016b" class="headerlink" title="matlab2016b"></a>matlab2016b</h4><ul>
-<li><a href="https://zllrunning.github.io/2017/12/28/Ubuntu16.04%E5%AE%89%E8%A3%85matlab2016b/">详细安装过程</a></li>
-</ul>
-<hr>
+          <p>Finetune，只更新fc层的参数<br><a id="more"></a></p>
+<h2 id="只更新最后一层的参数"><a href="#只更新最后一层的参数" class="headerlink" title="只更新最后一层的参数"></a>只更新最后一层的参数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">model = models.vgg19(pretrained=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># 冻结所有层的参数，finetune过程中这些参数不更新</span></span><br><span class="line"><span class="keyword">for</span> param <span class="keyword">in</span> model.parameters():</span><br><span class="line">    param.requires_grad = <span class="keyword">False</span></span><br><span class="line"><span class="comment"># torch.nn.Linear(in_features, out_features, bias=True)，获得in_features，即num_ftrs</span></span><br><span class="line">num_ftrs = model.fc.in_features</span><br><span class="line"><span class="comment"># 训练集只有两类</span></span><br><span class="line"><span class="comment"># nn.Linear()的weights和bias默认requires_grad = True</span></span><br><span class="line">model.fc = nn.Linear(num_ftrs, <span class="number">2</span>)</span><br><span class="line"><span class="comment"># 只更新fc层的参数，model.fc.parameters()</span></span><br><span class="line">optimizer = optim.SGD(model.fc.parameters(), lr=<span class="number">0.001</span>, momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="也可不改变原有网络，在其后增加若干层-像下面这样操作"><a href="#也可不改变原有网络，在其后增加若干层-像下面这样操作" class="headerlink" title="也可不改变原有网络，在其后增加若干层,像下面这样操作"></a>也可不改变原有网络，在其后增加若干层,像下面这样操作</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.vgg = models.vgg19(pretrained=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">for</span> para <span class="keyword">in</span> self.vgg.parameters():</span><br><span class="line">            para.requires_grad = <span class="keyword">False</span>  </span><br><span class="line">        self.relu = nn.ReLU(inplace=<span class="keyword">True</span>)</span><br><span class="line">        self.fc_1000_2 = nn.Linear(<span class="number">1000</span>, <span class="number">2</span>)  <span class="comment"># requires_grad默认为True</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        vgg_out = self.vgg(x)</span><br><span class="line">        out = self.relu(vgg_out)</span><br><span class="line">        out = self.fc_1000_2(out)   <span class="comment"># vgg的输出再加一层，1000--&gt;2</span></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
 
         </div>
 <div id="gitmentContainer"></div>
