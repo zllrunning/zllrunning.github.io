@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="zll">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Pytorch学习率相关问题及L2 Penalty"/>
+  <meta property="og:description" content="石头的记录" />
+  <meta property="og:site_name" content="小小石头"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://zllrunning.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="小小石头" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+
+  <!-- Site Title -->
+  <title>小小石头</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Pytorch学习率相关问题及L2 Penalty</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/zllrunning">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:zllrunning@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By zll</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-02</span>
+            <span class="time">22:40:10</span>
+          </span>
+
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/深度学习/">深度学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Pytorch/">#Pytorch</a>
+
+
+	  <span id="busuanzi_container_page_pv">
+   		本文浏览量<span id="busuanzi_value_page_pv"></span>次
+	  </span>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>Pytorch不同层的学习率设置，学习率的调节，对参数施加L2 Penalty<br><a id="more"></a></p>
+<p>##1.Pytorch对于不同层设置不同的学习率<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">optim.SGD([</span><br><span class="line">                &#123;<span class="string">'params'</span>: model.base.parameters()&#125;,</span><br><span class="line">                &#123;<span class="string">'params'</span>: model.classifier.parameters(), <span class="string">'lr'</span>: <span class="number">1e-3</span>&#125;</span><br><span class="line">            ], lr=<span class="number">1e-2</span>, momentum=<span class="number">0.9</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>model.base.parameters()</code>将使用1e-2的学习率，</li>
+<li><code>model.classifier.parameters()</code>将使用1e-3的学习率,</li>
+<li>0.9的momentum作用于所有的parameters。<br>##2.甚至可以对于同一层的weight和bias设置不同的lr<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Net</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(Net, self).__init__()</span><br><span class="line">        self.layer = nn.Linear(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.layer(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">"__main__"</span>:</span><br><span class="line">    net = Net()</span><br><span class="line">    optimizer = optim.Adam([</span><br><span class="line">                &#123;<span class="string">'params'</span>: net.layer.weight&#125;,</span><br><span class="line">                &#123;<span class="string">'params'</span>: net.layer.bias, <span class="string">'lr'</span>: <span class="number">0.01</span>&#125;</span><br><span class="line">            ], lr=<span class="number">0.1</span>, weight_decay=<span class="number">0.0001</span>)</span><br><span class="line">    out = net(Variable(torch.Tensor(<span class="number">1</span>)))</span><br><span class="line">    out.backward()</span><br><span class="line">    optimizer.step()</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>##3.训练过程中学习率的调节<br><code>torch.optim.lr_scheduler</code>中提供了多种方法，如</p>
+<ul>
+<li><code>LambdaLR</code></li>
+<li><code>StepLR</code></li>
+<li><code>MultiStepLR</code></li>
+<li><code>ExponentialLR</code><br>举个官网给的例子<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; # Assuming optimizer uses lr = 0.05 for all groups</span><br><span class="line">&gt;&gt;&gt; # lr = 0.05     if epoch &lt; 30</span><br><span class="line">&gt;&gt;&gt; # lr = 0.005    if 30 &lt;= epoch &lt; 80</span><br><span class="line">&gt;&gt;&gt; # lr = 0.0005   if epoch &gt;= 80</span><br><span class="line">&gt;&gt;&gt; scheduler = MultiStepLR(optimizer, milestones=[30,80], gamma=0.1)</span><br><span class="line">&gt;&gt;&gt; for epoch in range(100):</span><br><span class="line">&gt;&gt;&gt;     scheduler.step()</span><br><span class="line">&gt;&gt;&gt;     train(...)</span><br><span class="line">&gt;&gt;&gt;     validate(...)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>##4.对参数加 L2 penalty<br>Pytorch中的Adam，RMSprop，SGD等都有一个<em>weight_decay</em>的参数，默认为0，如果设置不为0，对参数会实施<strong>L2 penalty</strong>。</p>
+<p><code>optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)</code></p>
+
+        </div>
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'zllrunning',
+    repo: 'zllrunning.github.io',
+    oauth: {
+        client_id: 'e6f46c4e8b4073d9bc67',
+        client_secret: '3d4cbc0a4cd9abd0ca6d6a691e20f9161a11677f',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5kc74bk53wq&amp;m=7&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80" async="async"></script>
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+	   <span id="busuanzi_container_site_pv">
+    	     本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	   </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
