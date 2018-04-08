@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="zll">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Pytorch训练过程中查看学习率等参数"/>
+  <meta property="og:description" content="石头的记录" />
+  <meta property="og:site_name" content="小小石头"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://zllrunning.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="小小石头" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+
+  <!-- Site Title -->
+  <title>小小石头</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Pytorch训练过程中查看学习率等参数</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/zllrunning">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:zllrunning@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By zll</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-08</span>
+            <span class="time">22:19:05</span>
+          </span>
+
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/深度学习/">深度学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Pytorch/">#Pytorch</a>
+
+
+	  <span id="busuanzi_container_page_pv">
+   		本文浏览量<span id="busuanzi_value_page_pv"></span>次
+	  </span>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>在网络的训练过程中如何查看optimizer的参数？<br><a id="more"></a></p>
+<p>##在网络的训练过程中如何查看optimizer的参数？<br><strong><code>optimizer.param_groups</code>是一个列表，列表中的元素是一个个字典</strong>。</p>
+<p>###如果你的optimizer这样写:</p>
+<p><code>optimizer = torch.optim.Adam(cnn.parameters())</code><br>那么<code>optimizer.param_groups</code>是包含一个字典的列表。<br>可以通过<code>optimizer.param_groups[0]</code>取出这个字典，可以看下它包含哪些参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;betas&apos;: (0.9, 0.999),</span><br><span class="line"> &apos;eps&apos;: 1e-08,</span><br><span class="line"> &apos;lr&apos;: 0.001,</span><br><span class="line"> &apos;params&apos;: [Parameter containing:</span><br><span class="line">(0 ,0 ,.,.) = </span><br><span class="line"> -0.0116  0.0621 -0.0300 -0.1113 -0.0077</span><br><span class="line">  0.0339  0.0730 -0.1948  0.0330 -0.0886</span><br><span class="line"> -0.0476  0.0123 -0.1204 -0.1775  0.0321</span><br><span class="line">  0.1862 -0.0613 -0.1309 -0.1461 -0.1497</span><br><span class="line"> -0.0738  0.1986 -0.0223 -0.0217 -0.0191</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">(15,0 ,.,.) = </span><br><span class="line"> -0.1605  0.1760 -0.0950  0.0716 -0.0603</span><br><span class="line">  0.1547 -0.1716  0.1406  0.0155  0.1417</span><br><span class="line"> -0.0405 -0.1392 -0.1946  0.1510 -0.0985</span><br><span class="line"> -0.1094 -0.0099  0.0079 -0.1506  0.1812</span><br><span class="line">  0.0217 -0.0062  0.1246  0.0715  0.1031</span><br><span class="line">[torch.cuda.FloatTensor of size 16x1x5x5 (GPU 0)]</span><br><span class="line">],</span><br><span class="line"> &apos;weight_decay&apos;: 0&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看出，有betas, eps, lr, paras, weight_decay。<br>因此如果训练过程中想查看lr，只需<code>optimizer.param_groups[0][&#39;lr&#39;]</code>即可，查看其他参数类似。</p>
+<h3 id="前面讲过一个adam可以设置不同的学习率和其他的参数，如"><a href="#前面讲过一个adam可以设置不同的学习率和其他的参数，如" class="headerlink" title="前面讲过一个adam可以设置不同的学习率和其他的参数，如"></a>前面讲过一个adam可以设置不同的学习率和其他的参数，如</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">optimizer = torch.optim.Adam([&#123;<span class="string">'params'</span>:cnn.layer1.parameters()&#125;,</span><br><span class="line">                              &#123;<span class="string">'params'</span>:cnn.layer2.parameters(), <span class="string">'lr'</span>: <span class="number">0.01</span>, <span class="string">'weight_decay'</span>:<span class="number">1e-4</span>&#125;], lr=<span class="number">0.001</span>)</span><br><span class="line"></span><br><span class="line">这个时候`optimizer.param_groups`为包含两个字典的列表,分别为不同层的参数</span><br><span class="line"></span><br><span class="line">optimizer.param_groups[<span class="number">0</span>]则是cnn.layer1的参数，那么optimizer.param_groups[<span class="number">0</span>][<span class="string">'lr'</span>]即<span class="number">0.001</span></span><br><span class="line"></span><br><span class="line">optimizer.param_groups[<span class="number">1</span>]则是cnn.layer2的参数，那么optimizer.param_groups[<span class="number">1</span>][<span class="string">'lr'</span>]即<span class="number">0.01</span></span><br></pre></td></tr></table></figure>
+        </div>
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'zllrunning',
+    repo: 'zllrunning.github.io',
+    oauth: {
+        client_id: 'e6f46c4e8b4073d9bc67',
+        client_secret: '3d4cbc0a4cd9abd0ca6d6a691e20f9161a11677f',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5kc74bk53wq&amp;m=7&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80" async="async"></script>
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+	   <span id="busuanzi_container_site_pv">
+    	     本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	   </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
