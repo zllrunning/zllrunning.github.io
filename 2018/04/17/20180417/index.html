@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="zll">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Pytorch可视化工具visdom的简单使用"/>
+  <meta property="og:description" content="石头的记录" />
+  <meta property="og:site_name" content="小小石头"/>
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="http://zllrunning.github.io"/>
+  
+    <link rel="alternate" href="/atom.xml" title="小小石头" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.ico">
+  
+
+  <!-- Site Title -->
+  <title>小小石头</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Pytorch可视化工具visdom的简单使用</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/zllrunning">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:zllrunning@gmail.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By zll</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2018-04-17</span>
+            <span class="time">14:49:42</span>
+          </span>
+
+          
+          <!--  Categories  -->
+            <span class="categories info">Under 
+
+<a href="/categories/深度学习/">深度学习</a>
+</span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Pytorch/">#Pytorch</a>
+
+
+	  <span id="busuanzi_container_page_pv">
+   		本文浏览量<span id="busuanzi_value_page_pv"></span>次
+	  </span>
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <p>Visdom是Facebook专门为Pytorch开发的一款可视化工具，轻量级但功能丰富。<br><a id="more"></a></p>
+<h1 id="visdom的简单实用"><a href="#visdom的简单实用" class="headerlink" title="visdom的简单实用"></a>visdom的简单实用</h1><p>visdom我主要是用来查看网络训练时loss的变化，其他的我倒不是太经常用到。如果训练过程中查看网络输出的图片，我一般就使用<code>torchvision.utils.save_image()</code>把图片保存在本地了。所以本文也就简单介绍下visdom的使用。</p>
+<h2 id="visdom的安装"><a href="#visdom的安装" class="headerlink" title="visdom的安装"></a>visdom的安装</h2><p>使用<code>pip install visdom</code>就可以了</p>
+<p>##启动<br>通过命令<code>python -m visdom.server</code>启动服务<br>本地浏览器打开<code>http://localhost:8097</code>就可以了</p>
+<p>##程序中查看损失函数的变化<br>下面给一个小例子（我使用GPU了）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> torchvision.datasets <span class="keyword">as</span> dsets</span><br><span class="line"><span class="keyword">import</span> torchvision.transforms <span class="keyword">as</span> transforms</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line"></span><br><span class="line"><span class="comment">#######################################</span></span><br><span class="line"><span class="keyword">import</span> visdom</span><br><span class="line"><span class="comment">#指定Environment：train</span></span><br><span class="line">vis = visdom.Visdom(env=<span class="string">u'train'</span>)</span><br><span class="line"><span class="comment">######################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Hyper Parameters</span></span><br><span class="line">num_epochs = <span class="number">50</span></span><br><span class="line">batch_size = <span class="number">64</span></span><br><span class="line">learning_rate = <span class="number">0.001</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MNIST Dataset</span></span><br><span class="line">train_dataset = dsets.MNIST(root=<span class="string">'./data/'</span>,</span><br><span class="line">                            train=<span class="keyword">True</span>, </span><br><span class="line">                            transform=transforms.ToTensor(),</span><br><span class="line">                            download=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">test_dataset = dsets.MNIST(root=<span class="string">'./data/'</span>,</span><br><span class="line">                           train=<span class="keyword">False</span>, </span><br><span class="line">                           transform=transforms.ToTensor())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Data Loader (Input Pipeline)</span></span><br><span class="line">train_loader = torch.utils.data.DataLoader(dataset=train_dataset,</span><br><span class="line">                                           batch_size=batch_size, </span><br><span class="line">                                           shuffle=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">test_loader = torch.utils.data.DataLoader(dataset=test_dataset,</span><br><span class="line">                                          batch_size=batch_size, </span><br><span class="line">                                          shuffle=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># CNN Model (2 conv layer)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CNN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(CNN, self).__init__()</span><br><span class="line">        self.layer1 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">1</span>, <span class="number">16</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">16</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.MaxPool2d(<span class="number">2</span>))</span><br><span class="line">        self.layer2 = nn.Sequential(</span><br><span class="line">            nn.Conv2d(<span class="number">16</span>, <span class="number">32</span>, kernel_size=<span class="number">5</span>, padding=<span class="number">2</span>),</span><br><span class="line">            nn.BatchNorm2d(<span class="number">32</span>),</span><br><span class="line">            nn.ReLU(),</span><br><span class="line">            nn.MaxPool2d(<span class="number">2</span>))</span><br><span class="line">        self.fc = nn.Linear(<span class="number">7</span>*<span class="number">7</span>*<span class="number">32</span>, <span class="number">10</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        out = self.layer1(x)</span><br><span class="line">        out = self.layer2(out)</span><br><span class="line">        out = out.view(out.size(<span class="number">0</span>), <span class="number">-1</span>)</span><br><span class="line">        out = self.fc(out)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">        </span><br><span class="line">cnn = CNN()</span><br><span class="line">cnn.cuda()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Loss and Optimizer</span></span><br><span class="line">criterion = nn.CrossEntropyLoss()</span><br><span class="line">optimizer = torch.optim.Adam([&#123;<span class="string">'params'</span>: cnn.layer1.parameters()&#125;,</span><br><span class="line">                              &#123;<span class="string">'params'</span>: cnn.layer2.parameters(), <span class="string">'lr'</span>: <span class="number">1e-2</span>, &#125;], lr=learning_rate)</span><br><span class="line"><span class="comment"># Train the Model</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(num_epochs):</span><br><span class="line">    epoch_loss = <span class="number">0.</span></span><br><span class="line">    <span class="keyword">for</span> i, (images, labels) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        images = Variable(images).cuda()</span><br><span class="line">        labels = Variable(labels).cuda()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Forward + Backward + Optimize</span></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        outputs = cnn(images)</span><br><span class="line">        loss = criterion(outputs, labels)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        <span class="keyword">if</span> (i+<span class="number">1</span>) % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">'Epoch [%d/%d], Iter [%d/%d] Loss: %.4f'</span></span><br><span class="line">                   %(epoch+<span class="number">1</span>, num_epochs, i+<span class="number">1</span>, len(train_dataset)//batch_size, loss.data[<span class="number">0</span>]))</span><br><span class="line">        epoch_loss += loss.data[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment">########################################################################################################################</span></span><br><span class="line">    <span class="comment"># 这里要注意update='append' if epoch &gt; 1 else None，避免覆盖之前的数值</span></span><br><span class="line">    vis.line(X=torch.FloatTensor([epoch]), Y=torch.FloatTensor([epoch_loss]), win=<span class="string">'train'</span>, update=<span class="string">'append'</span> <span class="keyword">if</span> epoch &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="keyword">None</span>,</span><br><span class="line">             opts=&#123;<span class="string">'title'</span>: <span class="string">'train loss'</span>&#125;)</span><br><span class="line">    <span class="comment">########################################################################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Save the Trained Model</span></span><br><span class="line">torch.save(cnn.state_dict(), <span class="string">'./cnn.pkl'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>程序内部用到visdom的地方已经用多个#号标记起来了。<br>程序里面需要注意的是</p>
+<p><code>update=&#39;append&#39; if epoch &gt; 1 else None</code><br>因为每次操作都会覆盖之前的数值，但往往我们在训练网络的过程中需不断更新数值，这时就需要指定参数update=’append’来避免覆盖之前的数值。</p>
+<p><code>X=torch.FloatTensor([epoch]), Y=torch.FloatTensor([epoch_loss])</code><br>X,Y我基本会设置为FloatTensor</p>
+<h2 id="其他一些使用"><a href="#其他一些使用" class="headerlink" title="其他一些使用"></a>其他一些使用</h2><p>导入一些包，启动visdom服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import visdom</span><br><span class="line">import torch as t</span><br><span class="line">from PIL import Image</span><br><span class="line">from torchvision.transforms import ToTensor</span><br><span class="line">vis = visdom.Visdom(env=u&apos;test&apos;)</span><br></pre></td></tr></table></figure></p>
+<p>###正弦函数图形绘制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = t.arange(1, 30, 0.01)</span><br><span class="line">y = t.sin(x)</span><br><span class="line">vis.line(X=x, Y=y, win=&apos;sinx&apos;, opts=&#123;&apos;title&apos;: &apos;y=sin(x)&apos;&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>###显示一些随机图片<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 可视化一个随机的黑白图片</span><br><span class="line">vis.image(t.randn(64, 64), win=&apos;random1&apos;, opts=&#123;&apos;title&apos;: &apos;random1&apos;&#125;)</span><br><span class="line"></span><br><span class="line"># 随机可视化一张彩色图片</span><br><span class="line">vis.image(t.randn(3, 64, 64), win=&apos;random2&apos;, opts=&#123;&apos;title&apos;: &apos;random2&apos;&#125;)</span><br><span class="line"></span><br><span class="line"># 可视化36张随机的彩色图片，每一行6张</span><br><span class="line">vis.images(t.randn(36, 3, 64, 64), nrow=6, padding=2,  win=&apos;random3&apos;, opts=&#123;&apos;title&apos;: &apos;random_imgs&apos;&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>###显示本地图片<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">image = Image.open(&apos;./src/image/tyx1.jpg&apos;)</span><br><span class="line">image = ToTensor()(image)</span><br><span class="line">vis.image(img=image, win=&apos;image&apos;, opts=&#123;&apos;title&apos;: &apos;show image&apos;&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>上面这些是我一些常用的操作，其他的暂时还没有用到。</p>
+<p>部分内容参考自《深度学习框架PyTorch：入门与实践》</p>
+
+        </div>
+<div id="gitmentContainer"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'zllrunning',
+    repo: 'zllrunning.github.io',
+    oauth: {
+        client_id: 'e6f46c4e8b4073d9bc67',
+        client_secret: '3d4cbc0a4cd9abd0ca6d6a691e20f9161a11677f',
+    },
+});
+gitment.render('gitmentContainer');
+</script>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5kc74bk53wq&amp;m=7&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80" async="async"></script>
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          
+        <p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+	   <span id="busuanzi_container_site_pv">
+    	     本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	   </span>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
